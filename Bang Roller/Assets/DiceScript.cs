@@ -47,7 +47,7 @@ public class DiceScript : MonoBehaviour
             // Set sprite to upper face of dice from array according to random value
             rend.sprite = diceSides[randomDiceSide];
 
-            // Pause before next itteration
+            // Pause before next iteration
             yield return new WaitForSeconds(0.05f);
         }
 
