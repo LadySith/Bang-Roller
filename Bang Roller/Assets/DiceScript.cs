@@ -6,6 +6,12 @@ public class DiceScript : MonoBehaviour
 {
     // Array of dice sides sprites to load from Resources folder
     private Sprite[] diceSides;
+    // Default and new color to change to on selected
+    [SerializeField] private Color defaultColor;
+    [SerializeField] private Color newColor;
+    // Is the object selected. Click to select
+    private bool isSelected = false;
+    private int sideUp = 1;
 
     // Reference to sprite renderer to change sprites
     private SpriteRenderer rend;
@@ -15,6 +21,8 @@ public class DiceScript : MonoBehaviour
     {
 
         // Assign Renderer component
+        defaultColor = Color.white;
+        newColor = Color.cyan;
         rend = GetComponent<SpriteRenderer>();
 
         // Load dice sides sprites to array from DiceSides subfolder of Resources folder
@@ -24,7 +32,10 @@ public class DiceScript : MonoBehaviour
     // If you left click over the dice then RollTheDice coroutine is started
     public void OnRoll()
     {
-        StartCoroutine("RollTheDice");
+        if (!isSelected && sideUp != 6)
+        {
+            StartCoroutine("RollTheDice");
+        }
     }
 
     // Coroutine that rolls the dice
@@ -54,8 +65,21 @@ public class DiceScript : MonoBehaviour
         // Assigning final side so you can use this value later in your game
         // for player movement for example
         finalSide = randomDiceSide + 1;
-
+        sideUp = finalSide;
         // Show final dice value in Console
         Debug.Log(this.name + ": " + finalSide);
+    }
+
+    public void OnMouseDown()
+    {
+        isSelected = !isSelected;
+        if (isSelected)
+        {
+            rend.color = newColor;
+        }
+        else
+        {
+            rend.color = defaultColor;
+        }
     }
 }
