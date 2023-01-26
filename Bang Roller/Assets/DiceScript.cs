@@ -82,4 +82,17 @@ public class DiceScript : MonoBehaviour
             rend.color = defaultColor;
         }
     }
+
+    public void resetDice()
+    {
+        sideUp = 1;
+        rend.sprite = diceSides[0];
+        rend.color = defaultColor;
+        isSelected = false;
+    }
+
+    public int getSideUp()
+    {
+        return sideUp;
+    }
 }
