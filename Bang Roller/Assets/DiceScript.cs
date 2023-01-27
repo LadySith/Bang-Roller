@@ -66,8 +66,6 @@ public class DiceScript : MonoBehaviour
         // for player movement for example
         finalSide = randomDiceSide + 1;
         sideUp = finalSide;
-        // Show final dice value in Console
-        Debug.Log(this.name + ": " + finalSide);
     }
 
     public void OnMouseDown()

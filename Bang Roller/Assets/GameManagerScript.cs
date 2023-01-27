@@ -6,14 +6,22 @@ public class GameManagerScript : MonoBehaviour
 {
 
     private GameObject[] Dice;
-    public int maxLife;
+    public int maxLife = 6;
     private int curLife;
     private int bangCount;
+    private int rollNum;
+    private int arrowsHeld;
+    private int arrowsInPile;
+    public int allArrows = 10;
 
     void Start()
     {
         curLife = maxLife;
         bangCount = 0;
+        rollNum = 0;
+        arrowsHeld = 0;
+        arrowsInPile = allArrows;
+        
 
         if (Dice == null)
         {
@@ -35,6 +43,10 @@ public class GameManagerScript : MonoBehaviour
         }
 
         checkBang();
+        checkArrows();
+        rollNum++;
+
+        Debug.Log("END OF ROLL\nLife = " + curLife + "/" + maxLife + "\nRoll #" + rollNum + "\n\nArrows Held = " + arrowsHeld + "\nArrows In Pile = " + arrowsInPile + "\n\n:)\n");
     }
 
     public void resetAll()
@@ -47,14 +59,19 @@ public class GameManagerScript : MonoBehaviour
 
     public void resetGame()
     {
-        //reset all numbers in the game
+        resetAll();
+        curLife = maxLife;
+        bangCount = 0;
+        rollNum = 0;
+        arrowsHeld = 0;
+        arrowsInPile = allArrows;
     }
 
     public void gainLife()
     {
         if (curLife < maxLife)
         {
-            maxLife++;
+            curLife++;
         }
     }
 
@@ -62,7 +79,7 @@ public class GameManagerScript : MonoBehaviour
     {
         if (curLife > 0)
         {
-            maxLife--;
+            curLife--;
         }
 
         if (curLife == 0)
@@ -91,7 +108,61 @@ public class GameManagerScript : MonoBehaviour
         {
 
             Debug.Log("BANG!");
-            //Lose a life
+            loseLife();
         }
+    }
+
+    private void checkArrows()
+    {
+        for (int i = 0; i < Dice.Length; i++)
+        {
+            if (Dice[i].GetComponent<DiceScript>().getSideUp() == 5)
+            {
+                arrowsHeld++;
+                arrowsInPile--;
+                if (arrowsInPile == 0)
+                {
+                    for (int j = 0; j < arrowsHeld; j++)
+                    {
+                        loseLife();
+                    }
+                }
+            }
+        }
+    }
+
+    public void endTurn()
+    {
+
+        int gatlingCount = 0;
+
+        for (int i = 0; i < Dice.Length; i++)
+        {
+            if (Dice[i].GetComponent<DiceScript>().getSideUp() == 1)
+            {
+                Debug.Log("You may shoot a player distance 1 away from you");
+            }
+            if (Dice[i].GetComponent<DiceScript>().getSideUp() == 2)
+            {
+                Debug.Log("You may shoot a player distance 2 away from you");
+            }
+            if (Dice[i].GetComponent<DiceScript>().getSideUp() == 3)
+            {
+                gainLife();
+            }
+            if (Dice[i].GetComponent<DiceScript>().getSideUp() == 4)
+            {
+                gatlingCount++;
+                if (gatlingCount > 2)
+                {
+                    Debug.Log("All players but you lose a life");
+                    arrowsInPile += arrowsHeld;
+                    arrowsHeld = 0;
+                }
+                
+            }
+        }
+
+        Debug.Log("END OF TURN\nLife = " + curLife + "/" + maxLife + "\nRoll #" + rollNum + "\n\nArrows Held = " + arrowsHeld + "\nArrows In Pile = " + arrowsInPile + "\n\n:)\n");
     }
 }
