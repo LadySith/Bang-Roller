@@ -45,8 +45,11 @@ public class GameManagerScript : MonoBehaviour
         checkBang();
         checkArrows();
         rollNum++;
+    }
 
-        Debug.Log("END OF ROLL\nLife = " + curLife + "/" + maxLife + "\nRoll #" + rollNum + "\n\nArrows Held = " + arrowsHeld + "\nArrows In Pile = " + arrowsInPile + "\n\n:)\n");
+    public void checkState()
+    {
+        Debug.Log("STATE\nLife = " + curLife + "/" + maxLife + "\nRoll #" + rollNum + "\n\nArrows Held = " + arrowsHeld + "\nArrows In Pile = " + arrowsInPile + "\n\n:)\n");
     }
 
     public void resetAll()
@@ -112,7 +115,7 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    private void checkArrows()
+    public void checkArrows()
     {
         for (int i = 0; i < Dice.Length; i++)
         {
@@ -163,6 +166,6 @@ public class GameManagerScript : MonoBehaviour
             }
         }
 
-        Debug.Log("END OF TURN\nLife = " + curLife + "/" + maxLife + "\nRoll #" + rollNum + "\n\nArrows Held = " + arrowsHeld + "\nArrows In Pile = " + arrowsInPile + "\n\n:)\n");
+        Debug.Log("END OF TURN");
     }
 }
